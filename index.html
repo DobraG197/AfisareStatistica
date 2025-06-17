@@ -1,233 +1,69 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Scor Meci</title>
+  <meta charset="UTF-8">
+  <title>Grupe Turneu</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #e0eafc, #cfdef3);
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 30px 20px 100px;
-    }
-
-    h1 {
-      font-size: 2.2em;
-      color: #2c3e50;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .match-setup {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .match-setup div {
-      flex: 1;
-      margin: 0 10px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-      font-size: 1em;
-    }
-
-    select, input[type="number"] {
-      width: 100%;
-      padding: 10px;
-      font-size: 1em;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-
-    .score-inputs {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .score-inputs input {
-      width: 60px;
-      font-size: 1.8em;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .score-inputs span {
-      font-size: 2em;
-      font-weight: bold;
-      color: #34495e;
-    }
-
-    .main-button {
-      padding: 12px 25px;
-      font-size: 1.1em;
-      border: none;
-      border-radius: 10px;
-      background-color: #3498db;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin: 10px auto;
-      display: block;
-    }
-
-    .main-button:hover {
-      background-color: #2980b9;
-    }
-
-    #toggle-btn {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      padding: 10px 18px;
-      font-size: 0.9em;
-      border: none;
-      border-radius: 6px;
-      background-color: #555;
-      color: white;
-      cursor: pointer;
-      z-index: 999;
-    }
-
-    #toggle-btn:hover {
-      background-color: #333;
-    }
-
-    .score-display {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: 100vw;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 5vw;
-      font-weight: bold;
-      color: #2c3e50;
-      text-align: center;
-      pointer-events: none;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        width: 90%;
-      }
-
-      .score-display {
-        font-size: 8vw;
-      }
-    }
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h2 { margin-top: 40px; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 40px; }
+    th, td { border: 1px solid #aaa; padding: 8px; text-align: center; }
+    th { background-color: #eee; }
   </style>
 </head>
 <body>
-  <div class="container" id="settings">
-    <h1>Scorul Meciului</h1>
 
-    <div class="match-setup">
-      <div>
-        <label for="team1">Echipa 1:</label>
-        <select id="team1">
-          <option>Shadow FC</option>
-          <option>FC. Rilland</option>
-          <option>CSM Unirea</option>
-          <option>VidaXL</option>
-          <option>FC. Dosko</option>
-          <option>FC. Eagles</option>
-          <option>Leerdam Sport</option>
-          <option>FC. Tilburg</option>
-          <option>FC. Peppy</option>
-          <option>FC. Hunters</option>
-          <option>FC. Wariors</option>
-          <option>FC. Urban Construct</option>
-          <option>Young Stars</option>
-          <option>FC. Concrete Berești</option>
-          <option>Amicii</option>
-          <option>FC. Raiders Amsterdam</option>
-        </select>
-      </div>
-      <div>
-        <label for="team2">Echipa 2:</label>
-        <select id="team2">
-          <option>Shadow FC</option>
-          <option>FC. Rilland</option>
-          <option>CSM Unirea</option>
-          <option>VidaXL</option>
-          <option>FC. Dosko</option>
-          <option>FC. Eagles</option>
-          <option>Leerdam Sport</option>
-          <option>FC. Tilburg</option>
-          <option>FC. Peppy</option>
-          <option>FC. Hunters</option>
-          <option>FC. Wariors</option>
-          <option>FC. Urban Construct</option>
-          <option>Young Stars</option>
-          <option>FC. Concrete Berești</option>
-          <option>Amicii</option>
-          <option>FC. Raiders Amsterdam</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="score-inputs">
-      <input type="number" id="score1" min="0" value="0" />
-      <span>-</span>
-      <input type="number" id="score2" min="0" value="0" />
-    </div>
-
-    <button class="main-button" onclick="updateScore()">Actualizează Scorul</button>
-  </div>
-
-  <button id="toggle-btn" onclick="toggleSettings()">Ascunde Setările</button>
-
-  <div id="result" class="score-display"></div>
+  <h1>Grupele și Statistici</h1>
+  <div id="containerGrupe"></div>
 
   <script>
-    function updateScore() {
-      const team1 = document.getElementById("team1").value;
-      const team2 = document.getElementById("team2").value;
-      const score1 = document.getElementById("score1").value;
-      const score2 = document.getElementById("score2").value;
+    const grupe = JSON.parse(localStorage.getItem("grupe_turneu"));
+    const statistici = JSON.parse(localStorage.getItem("statistici_turneu"));
 
-      if (team1 === team2) {
-        alert("Alege echipe diferite!");
-        return;
-      }
+    const container = document.getElementById("containerGrupe");
 
-      const resultDiv = document.getElementById("result");
-      resultDiv.textContent = `${team1} ${score1} - ${score2} ${team2}`;
+    if (!grupe || !statistici) {
+      container.innerHTML = "<p>Datele nu au fost găsite în localStorage.</p>";
+    } else {
+      Object.keys(grupe).forEach(numeGrupa => {
+        const echipe = grupe[numeGrupa];
+        const statisticiGrupa = statistici[numeGrupa];
+
+        const titlu = document.createElement("h2");
+        titlu.textContent = numeGrupa;
+        container.appendChild(titlu);
+
+        const tabel = document.createElement("table");
+        tabel.innerHTML = `
+          <thead>
+            <tr>
+              <th>Echipă</th><th>MJ</th><th>V</th><th>E</th><th>I</th>
+              <th>GM</th><th>GP</th><th>GV</th><th>P</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${echipe.map(nume => {
+              const stats = statisticiGrupa[nume];
+              if (!stats) return `<tr><td colspan="9">${nume} - fără statistici</td></tr>`;
+              return `
+                <tr>
+                  <td>${stats.echipa}</td>
+                  <td>${stats.MJ}</td>
+                  <td>${stats.V}</td>
+                  <td>${stats.E}</td>
+                  <td>${stats.I}</td>
+                  <td>${stats.GM}</td>
+                  <td>${stats.GP}</td>
+                  <td>${stats.GV}</td>
+                  <td>${stats.P}</td>
+                </tr>`;
+            }).join("")}
+          </tbody>
+        `;
+        container.appendChild(tabel);
+      });
     }
-
-    function toggleSettings() {
-      const settings = document.getElementById("settings");
-      const btn = document.getElementById("toggle-btn");
-      settings.classList.toggle("hidden");
-      btn.textContent = settings.classList.contains("hidden")
-        ? "Arată Setările"
-        : "Ascunde Setările";
-    }
-
-    updateScore();
   </script>
+
 </body>
 </html>

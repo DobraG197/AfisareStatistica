@@ -4,49 +4,81 @@
   <meta charset="UTF-8">
   <title>Vizualizare Turneu</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #f4f4f4; }
-    h2 { margin-top: 2rem; color: #2c3e50; }
-    .section { margin-bottom: 2rem; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background: #eee; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #eee;
+    }
   </style>
 </head>
 <body>
+
   <h1>Rezultate Turneu</h1>
 
   <div id="grupe" class="section"></div>
+  <div id="statistici" class="section"></div>
   <div id="sferturi" class="section"></div>
   <div id="semifinale" class="section"></div>
-  <div id="statistici" class="section"></div>
 
   <script>
+    // Load data from localStorage
     const grupe = JSON.parse(localStorage.getItem("grupe_turneu") || '{}');
     const statistici = JSON.parse(localStorage.getItem("statistici_turneu") || '{}');
-    const sferturiHTML = localStorage.getItem("sferturi") || '<p>Fără date</p>';
-    const semifinaleHTML = localStorage.getItem("semifinale") || '<p>Fără date</p>';
+    const sferturiHTML = localStorage.getItem("sferturi") || '<p>Date indisponibile.</p>';
+    const semifinaleHTML = localStorage.getItem("semifinale") || '<p>Date indisponibile.</p>';
 
-    // Afișare Grupe
+    // === Grupe ===
     const grupeDiv = document.getElementById("grupe");
     grupeDiv.innerHTML = '<h2>Faza pe Grupe</h2>';
-    for (const [nume, echipe] of Object.entries(grupe)) {
-      grupeDiv.innerHTML += `<h3>${nume}</h3><ul>${echipe.map(e => `<li>${e}</li>`).join('')}</ul>`;
+    for (const [numeGrupa, echipe] of Object.entries(grupe)) {
+      grupeDiv.innerHTML += `<h3>${numeGrupa}</h3><ul>${
+        echipe.map(e => `<li>${e}</li>`).join('')
+      }</ul>`;
     }
 
-    // Afișare Sferturi (cu scoruri din localStorage)
-    const sfDiv = document.getElementById("sferturi");
-    sfDiv.innerHTML = `<h2>Sferturi de Finală</h2>${sferturiHTML}`;
-
-    // Afișare Semifinale (cu scoruri din localStorage)
-    const semiDiv = document.getElementById("semifinale");
-    semiDiv.innerHTML = `<h2>Semifinale</h2>${semifinaleHTML}`;
-
-    // Afișare Statistici
+    // === Statistici ===
     const statDiv = document.getElementById("statistici");
     statDiv.innerHTML = '<h2>Statistici Grupe</h2>';
     for (const [grupa, echipe] of Object.entries(statistici)) {
       statDiv.innerHTML += `<h3>${grupa}</h3><table>
-        <tr><th>Echipă</th><th>MJ</th><th>V</th><th>E</th><th>I</th><th>GM</th><th>GP</th><th>GV</th><th>P</th></tr>
+        <tr>
+          <th>Echipă</th><th>MJ</th><th>V</th><th>E</th><th>I</th>
+          <th>GM</th><th>GP</th><th>GV</th><th>P</th>
+        </tr>
         ${Object.values(echipe).map(e => `
           <tr>
             <td>${e.echipa}</td><td>${e.MJ}</td><td>${e.V}</td><td>${e.E}</td>
@@ -54,6 +86,15 @@
           </tr>`).join('')}
       </table>`;
     }
+
+    // === Sferturi ===
+    const sferturiDiv = document.getElementById("sferturi");
+    sferturiDiv.innerHTML = `<h2>Sferturi de Finală</h2>${sferturiHTML}`;
+
+    // === Semifinale ===
+    const semifinaleDiv = document.getElementById("semifinale");
+    semifinaleDiv.innerHTML = `<h2>Semifinale</h2>${semifinaleHTML}`;
   </script>
+
 </body>
 </html>

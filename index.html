@@ -52,13 +52,14 @@
     <script>
         // Funcție pentru a afișa statisticile turneului
         function afiseazaStatisticiTurneu() {
+            const grupeTurneu = JSON.parse(localStorage.getItem('grupe_turneu'));
             const statisticiTurneu = JSON.parse(localStorage.getItem('statistici_turneu'));
             const statisticiTurneuDiv = document.getElementById('statisticiTurneu');
 
-            if (statisticiTurneu) {
+            if (grupeTurneu) {
                 statisticiTurneuDiv.innerHTML = ''; // Clear previous content
 
-                for (const grupa in statisticiTurneu) {
+                for (const grupa in grupeTurneu) {
                     let groupDiv = document.createElement('div');
                     groupDiv.className = 'group';
 
@@ -77,10 +78,14 @@
                                 <th>P</th>
                             </tr>`;
 
-                    // Afișăm doar echipele care aparțin grupei respective
-                    const echipe = statisticiTurneu[grupa];
-                    for (const echipa in echipe) {
-                        const stats = echipe[echipa];
+                    // Afișăm echipele din grupă
+                    grupeTurneu[grupa].forEach(echipa => {
+                        // Obținem statisticile pentru echipă, dacă există
+                        const stats = statisticiTurneu?.[grupa]?.[echipa] || {
+                            echipa: echipa,
+                            MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0
+                        };
+
                         html += `
                             <tr>
                                 <td>${stats.echipa}</td>
@@ -93,7 +98,7 @@
                                 <td>${stats.GV}</td>
                                 <td>${stats.P}</td>
                             </tr>`;
-                    }
+                    });
 
                     html += `</table>`;
                     groupDiv.innerHTML = html;

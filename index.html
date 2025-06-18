@@ -38,71 +38,15 @@
     <div id="statisticiTurneu"></div>
 
     <script>
-        // Stocarea datelor în localStorage pentru testare
-        const statisticiTurneu = {
-            "Grupa A": {
-                "FC. Urban Construct": {"echipa": "FC. Urban Construct", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Raiders Amsterdam": {"echipa": "FC. Raiders Amsterdam", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Tilburg": {"echipa": "FC. Tilburg", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "VidaXL": {"echipa": "VidaXL", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Concrete Berești": {"echipa": "FC. Concrete Berești", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Hunters": {"echipa": "FC. Hunters", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Wariors": {"echipa": "FC. Wariors", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "Young Stars": {"echipa": "Young Stars", "MJ": 1, "V": 1, "E": 0, "I": 0, "GM": 1, "GP": 0, "GV": 1, "P": 3},
-                "Amicii": {"echipa": "Amicii", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "CSM Unirea": {"echipa": "CSM Unirea", "MJ": 1, "V": 0, "E": 1, "I": 0, "GM": 1, "GP": 1, "GV": 0, "P": 1}
-            },
-            "Grupa B": {
-                "Shadow FC": {"echipa": "Shadow FC", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Wariors": {"echipa": "FC. Wariors", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "Amicii": {"echipa": "Amicii", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Dosko": {"echipa": "FC. Dosko", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Eagles": {"echipa": "FC. Eagles", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Peppy": {"echipa": "FC. Peppy", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "Leerdam Sport": {"echipa": "Leerdam Sport", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Tilburg": {"echipa": "FC. Tilburg", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Raiders Amsterdam": {"echipa": "FC. Raiders Amsterdam", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Urban Construct": {"echipa": "FC. Urban Construct", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0}
-            },
-            "Grupa C": {
-                "FC. Dosko": {"echipa": "FC. Dosko", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Peppy": {"echipa": "FC. Peppy", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Eagles": {"echipa": "FC. Eagles", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "CSM Unirea": {"echipa": "CSM Unirea", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Rilland": {"echipa": "FC. Rilland", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Concrete Berești": {"echipa": "FC. Concrete Berești", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Hunters": {"echipa": "FC. Hunters", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "Leerdam Sport": {"echipa": "Leerdam Sport", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Raiders Amsterdam": {"echipa": "FC. Raiders Amsterdam", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Tilburg": {"echipa": "FC. Tilburg", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0}
-            },
-            "Grupa D": {
-                "Leerdam Sport": {"echipa": "Leerdam Sport", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Rilland": {"echipa": "FC. Rilland", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Concrete Berești": {"echipa": "FC. Concrete Berești", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "Young Stars": {"echipa": "Young Stars", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Urban Construct": {"echipa": "FC. Urban Construct", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Peppy": {"echipa": "FC. Peppy", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "Amicii": {"echipa": "Amicii", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "Shadow FC": {"echipa": "Shadow FC", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Raiders Amsterdam": {"echipa": "FC. Raiders Amsterdam", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "VidaXL": {"echipa": "VidaXL", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Dosko": {"echipa": "FC. Dosko", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0},
-                "FC. Eagles": {"echipa": "FC. Eagles", "MJ": 0, "V": 0, "E": 0, "I": 0, "GM": 0, "GP": 0, "GV": 0, "P": 0}
-            }
-        };
-
-        // Stocarea datelor în localStorage
-        localStorage.setItem('statistici_turneu', JSON.stringify(statisticiTurneu));
-
         // Funcție pentru a afișa statisticile turneului
         function afiseazaStatisticiTurneu() {
             const statisticiTurneu = JSON.parse(localStorage.getItem('statistici_turneu'));
             const statisticiTurneuDiv = document.getElementById('statisticiTurneu');
 
             if (statisticiTurneu) {
+                statisticiTurneuDiv.innerHTML = ''; // Clear previous content
                 for (const grupa in statisticiTurneu) {
-                    statisticiTurneuDiv.innerHTML += `
+                    let html = `
                         <div class="group">
                             <h2>${grupa}</h2>
                             <table>
@@ -117,9 +61,10 @@
                                     <th>GV</th>
                                     <th>P</th>
                                 </tr>`;
+
                     for (const echipa in statisticiTurneu[grupa]) {
                         const stats = statisticiTurneu[grupa][echipa];
-                        statisticiTurneuDiv.innerHTML += `
+                        html += `
                             <tr>
                                 <td>${stats.echipa}</td>
                                 <td>${stats.MJ}</td>
@@ -132,8 +77,12 @@
                                 <td>${stats.P}</td>
                             </tr>`;
                     }
-                    statisticiTurneuDiv.innerHTML += `</table></div>`;
+
+                    html += `</table></div>`;
+                    statisticiTurneuDiv.innerHTML += html;
                 }
+            } else {
+                statisticiTurneuDiv.innerHTML = '<p>Nu există date disponibile în localStorage.</p>';
             }
         }
 

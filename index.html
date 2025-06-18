@@ -9,8 +9,20 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+        h1 {
+            text-align: center;
+            width: 50%;
+            margin: 0 auto 20px auto;
+        }
+        .groups-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
         .group {
+            flex: 1 1 calc(50% - 20px);
             margin-bottom: 20px;
+            box-sizing: border-box;
         }
         .group h2 {
             color: #333;
@@ -35,7 +47,7 @@
 </head>
 <body>
     <h1>Grupe și Statistici Turneu</h1>
-    <div id="statisticiTurneu"></div>
+    <div class="groups-container" id="statisticiTurneu"></div>
 
     <script>
         // Funcție pentru a afișa statisticile turneului
@@ -45,22 +57,27 @@
 
             if (statisticiTurneu) {
                 statisticiTurneuDiv.innerHTML = ''; // Clear previous content
+                const groupsContainer = document.createElement('div');
+                groupsContainer.className = 'groups-container';
+
                 for (const grupa in statisticiTurneu) {
+                    let groupDiv = document.createElement('div');
+                    groupDiv.className = 'group';
+
                     let html = `
-                        <div class="group">
-                            <h2>${grupa}</h2>
-                            <table>
-                                <tr>
-                                    <th>Echipă</th>
-                                    <th>MJ</th>
-                                    <th>V</th>
-                                    <th>E</th>
-                                    <th>Î</th>
-                                    <th>GM</th>
-                                    <th>GP</th>
-                                    <th>GV</th>
-                                    <th>P</th>
-                                </tr>`;
+                        <h2>${grupa}</h2>
+                        <table>
+                            <tr>
+                                <th>Echipă</th>
+                                <th>MJ</th>
+                                <th>V</th>
+                                <th>E</th>
+                                <th>Î</th>
+                                <th>GM</th>
+                                <th>GP</th>
+                                <th>GV</th>
+                                <th>P</th>
+                            </tr>`;
 
                     // Afișăm doar echipele care aparțin grupei respective
                     for (const echipa in statisticiTurneu[grupa]) {
@@ -79,9 +96,12 @@
                             </tr>`;
                     }
 
-                    html += `</table></div>`;
-                    statisticiTurneuDiv.innerHTML += html;
+                    html += `</table>`;
+                    groupDiv.innerHTML = html;
+                    groupsContainer.appendChild(groupDiv);
                 }
+
+                statisticiTurneuDiv.appendChild(groupsContainer);
             } else {
                 statisticiTurneuDiv.innerHTML = '<p>Nu există date disponibile în localStorage.</p>';
             }

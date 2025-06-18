@@ -1,88 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rezultate Turneu</title>
+  <meta charset="UTF-8">
+  <title>Vizualizare Turneu</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; background-color: #f9f9f9; }
-    h2 { background-color: #333; color: #fff; padding: 0.5rem; border-radius: 5px; }
-    h3 { color: #444; margin-top: 2rem; }
-    .group, .stage, .team-stats { background-color: #fff; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .match-item { margin-bottom: 0.5rem; }
+    body { font-family: sans-serif; padding: 2rem; background: #f4f4f4; }
+    h2 { margin-top: 2rem; color: #2c3e50; }
+    .section { margin-bottom: 2rem; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #eee; }
+    th { background: #eee; }
   </style>
 </head>
 <body>
-  <h2>Rezultate Turneu</h2>
+  <h1>Rezultate Turneu</h1>
 
-  <div id="grupe"></div>
-  <div id="sferturi"></div>
-  <div id="semifinale"></div>
-  <div id="statistici"></div>
+  <div id="grupe" class="section"></div>
+  <div id="sferturi" class="section"></div>
+  <div id="semifinale" class="section"></div>
+  <div id="statistici" class="section"></div>
 
   <script>
-    function parseAndDisplay() {
-      const grupe = JSON.parse(localStorage.getItem("grupe_turneu") || '{}');
-      const statistici = JSON.parse(localStorage.getItem("statistici_turneu") || '{}');
-      const sferturiHTML = localStorage.getItem("sferturi") || '';
-      const semifinaleHTML = localStorage.getItem("semifinale") || '';
+    const grupe = JSON.parse(localStorage.getItem("grupe_turneu") || '{}');
+    const statistici = JSON.parse(localStorage.getItem("statistici_turneu") || '{}');
+    const sferturiHTML = localStorage.getItem("sferturi") || '<p>Fără date</p>';
+    const semifinaleHTML = localStorage.getItem("semifinale") || '<p>Fără date</p>';
 
-      // Grupuri
-      const grupeDiv = document.getElementById("grupe");
-      grupeDiv.innerHTML = '<h3>Faza pe Grupe</h3>';
-      for (const [grupa, echipe] of Object.entries(grupe)) {
-        const grupaContainer = document.createElement('div');
-        grupaContainer.className = 'group';
-        grupaContainer.innerHTML = `<h4>${grupa}</h4><ul>` +
-          echipe.map(echipa => `<li>${echipa}</li>`).join('') + '</ul>';
-        grupeDiv.appendChild(grupaContainer);
-      }
-
-      // Sferturi
-      const sferturiDiv = document.getElementById("sferturi");
-      sferturiDiv.innerHTML = '<h3>Sferturi de Finală</h3>';
-      const sfContainer = document.createElement('div');
-      sfContainer.className = 'stage';
-      sfContainer.innerHTML = sferturiHTML;
-      sferturiDiv.appendChild(sfContainer);
-
-      // Semifinale
-      const semifinaleDiv = document.getElementById("semifinale");
-      semifinaleDiv.innerHTML = '<h3>Semifinale</h3>';
-      const semiContainer = document.createElement('div');
-      semiContainer.className = 'stage';
-      semiContainer.innerHTML = semifinaleHTML;
-      semifinaleDiv.appendChild(semiContainer);
-
-      // Statistici
-      const statisticiDiv = document.getElementById("statistici");
-      statisticiDiv.innerHTML = '<h3>Statistici</h3>';
-      for (const [grupa, echipe] of Object.entries(statistici)) {
-        const table = document.createElement('table');
-        const header = `<tr><th>Echipa</th><th>MJ</th><th>V</th><th>E</th><th>I</th><th>GM</th><th>GP</th><th>GV</th><th>P</th></tr>`;
-        const rows = Object.values(echipe).map(e => `
-          <tr>
-            <td>${e.echipa}</td>
-            <td>${e.MJ}</td>
-            <td>${e.V}</td>
-            <td>${e.E}</td>
-            <td>${e.I}</td>
-            <td>${e.GM}</td>
-            <td>${e.GP}</td>
-            <td>${e.GV}</td>
-            <td>${e.P}</td>
-          </tr>
-        `).join('');
-        statisticiDiv.innerHTML += `<h4>${grupa}</h4>`;
-        table.innerHTML = header + rows;
-        statisticiDiv.appendChild(table);
-      }
+    // Afișare Grupe
+    const grupeDiv = document.getElementById("grupe");
+    grupeDiv.innerHTML = '<h2>Faza pe Grupe</h2>';
+    for (const [nume, echipe] of Object.entries(grupe)) {
+      grupeDiv.innerHTML += `<h3>${nume}</h3><ul>${echipe.map(e => `<li>${e}</li>`).join('')}</ul>`;
     }
 
-    window.onload = parseAndDisplay;
+    // Afișare Sferturi (cu scoruri din localStorage)
+    const sfDiv = document.getElementById("sferturi");
+    sfDiv.innerHTML = `<h2>Sferturi de Finală</h2>${sferturiHTML}`;
+
+    // Afișare Semifinale (cu scoruri din localStorage)
+    const semiDiv = document.getElementById("semifinale");
+    semiDiv.innerHTML = `<h2>Semifinale</h2>${semifinaleHTML}`;
+
+    // Afișare Statistici
+    const statDiv = document.getElementById("statistici");
+    statDiv.innerHTML = '<h2>Statistici Grupe</h2>';
+    for (const [grupa, echipe] of Object.entries(statistici)) {
+      statDiv.innerHTML += `<h3>${grupa}</h3><table>
+        <tr><th>Echipă</th><th>MJ</th><th>V</th><th>E</th><th>I</th><th>GM</th><th>GP</th><th>GV</th><th>P</th></tr>
+        ${Object.values(echipe).map(e => `
+          <tr>
+            <td>${e.echipa}</td><td>${e.MJ}</td><td>${e.V}</td><td>${e.E}</td>
+            <td>${e.I}</td><td>${e.GM}</td><td>${e.GP}</td><td>${e.GV}</td><td>${e.P}</td>
+          </tr>`).join('')}
+      </table>`;
+    }
   </script>
 </body>
 </html>

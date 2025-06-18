@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afisare Sferturi de Finală</title>
+    <title>Afisare Grupe, Sferturi și Statistici</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,20 +22,20 @@
             margin: 0 auto 20px auto;
         }
 
-        .quarterfinals-container {
+        .groups-container, .quarterfinals-container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 30px;
         }
 
-        .quarterfinal {
+        .group, .quarterfinal {
             flex: 1 1 calc(50% - 20px);
             margin-bottom: 20px;
             box-sizing: border-box;
         }
 
-        .quarterfinal h2 {
+        .group h2, .quarterfinal h2 {
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
             margin-top: 0;
@@ -63,12 +63,21 @@
     </style>
 </head>
 <body>
+    <h1>Grupe și Statistici Turneu</h1>
+    <div class="groups-container" id="statisticiTurneu"></div>
     <h1>Sferturi de Finală</h1>
     <div class="quarterfinals-container" id="sferturiTurneu"></div>
 
     <script>
         // Function to store data in localStorage
         function storeData() {
+            const grupeTurneu = {
+                "Grupa A": ["FC. Concrete Berești", "Leerdam Sport", "FC. Dosko", "Amicii"],
+                "Grupa B": ["Young Stars", "FC. Eagles", "FC. Tilburg", "FC. Rilland"],
+                "Grupa C": ["FC. Peppy", "FC. Urban Construct", "VidaXL", "FC. Hunters"],
+                "Grupa D": ["FC. Raiders Amsterdam", "FC. Warriors", "CSM Unirea", "Shadow FC"]
+            };
+
             const sferturiTurneu = {
                 "Sfert 1": ["Shadow FC", "VidaXL"],
                 "Sfert 2": ["Young Stars", "FC. Dosko"],
@@ -76,13 +85,78 @@
                 "Sfert 4": ["FC. Peppy", "FC. Eagles"]
             };
 
+            const statisticiTurneu = {
+                "Grupa A": {
+                    "FC. Concrete Berești": { echipa: "FC. Concrete Berești", MJ: 1, V: 1, E: 0, I: 0, GM: 1, GP: 0, GV: 1, P: 3 },
+                    "Leerdam Sport": { echipa: "Leerdam Sport", MJ: 1, V: 0, E: 0, I: 1, GM: 0, GP: 1, GV: -1, P: 0 },
+                    "FC. Dosko": { echipa: "FC. Dosko", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 },
+                    "Amicii": { echipa: "Amicii", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 }
+                },
+                "Grupa B": {
+                    "Young Stars": { echipa: "Young Stars", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 },
+                    "FC. Eagles": { echipa: "FC. Eagles", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 },
+                    "FC. Tilburg": { echipa: "FC. Tilburg", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 },
+                    "FC. Rilland": { echipa: "FC. Rilland", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 }
+                }
+            };
+
+            localStorage.setItem('grupe_turneu', JSON.stringify(grupeTurneu));
             localStorage.setItem('sferturi_turneu', JSON.stringify(sferturiTurneu));
+            localStorage.setItem('statistici_turneu', JSON.stringify(statisticiTurneu));
         }
 
-        // Function to display tournament quarterfinals
-        function afiseazaSferturiTurneu() {
+        // Function to display tournament statistics and quarterfinals
+        function afiseazaStatisticiSiSferturi() {
+            const grupeTurneu = JSON.parse(localStorage.getItem('grupe_turneu'));
             const sferturiTurneu = JSON.parse(localStorage.getItem('sferturi_turneu'));
+            const statisticiTurneu = JSON.parse(localStorage.getItem('statistici_turneu'));
+            const statisticiTurneuDiv = document.getElementById('statisticiTurneu');
             const sferturiTurneuDiv = document.getElementById('sferturiTurneu');
+
+            if (grupeTurneu && statisticiTurneu) {
+                statisticiTurneuDiv.innerHTML = '';
+                for (const grupa in grupeTurneu) {
+                    let groupDiv = document.createElement('div');
+                    groupDiv.className = 'group';
+
+                    let html = `
+                        <h2>${grupa}</h2>
+                        <table>
+                            <tr>
+                                <th>Echipă</th>
+                                <th>MJ</th>
+                                <th>V</th>
+                                <th>E</th>
+                                <th>Î</th>
+                                <th>GM</th>
+                                <th>GP</th>
+                                <th>GV</th>
+                                <th>P</th>
+                            </tr>`;
+
+                    grupeTurneu[grupa].forEach(echipa => {
+                        const stats = statisticiTurneu[grupa]?.[echipa] || { echipa, MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 };
+                        html += `
+                            <tr>
+                                <td>${stats.echipa}</td>
+                                <td>${stats.MJ}</td>
+                                <td>${stats.V}</td>
+                                <td>${stats.E}</td>
+                                <td>${stats.I}</td>
+                                <td>${stats.GM}</td>
+                                <td>${stats.GP}</td>
+                                <td>${stats.GV}</td>
+                                <td>${stats.P}</td>
+                            </tr>`;
+                    });
+
+                    html += `</table>`;
+                    groupDiv.innerHTML = html;
+                    statisticiTurneuDiv.appendChild(groupDiv);
+                }
+            } else {
+                statisticiTurneuDiv.innerHTML = '<p>Nu există date disponibile pentru grupe și statistici.</p>';
+            }
 
             if (sferturiTurneu) {
                 sferturiTurneuDiv.innerHTML = '';
@@ -109,14 +183,14 @@
                     sferturiTurneuDiv.appendChild(quarterfinalDiv);
                 }
             } else {
-                sferturiTurneuDiv.innerHTML = '<p>Nu există date disponibile în localStorage pentru sferturi.</p>';
+                sferturiTurneuDiv.innerHTML = '<p>Nu există date disponibile pentru sferturi.</p>';
             }
         }
 
         // Store data and display it on page load
         window.onload = function() {
             storeData();
-            afiseazaSferturiTurneu();
+            afiseazaStatisticiSiSferturi();
         };
     </script>
 </body>

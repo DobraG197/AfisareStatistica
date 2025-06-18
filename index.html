@@ -1,93 +1,163 @@
-function calculeazaStatistici(grupe, inputValues) {
-  const statistici = {};
-
-  for (const grupa in grupe) {
-    grupe[grupa].forEach(echipa => {
-      statistici[echipa] = {
-        grupa: grupa,
-        meciuri: 0,
-        victorii: 0,
-        egaluri: 0,
-        infrangeri: 0,
-        goluriMarcate: 0,
-        goluriPrimite: 0,
-        puncte: 0,
-      };
-    });
-  }
-
-  for (const key in inputValues) {
-    const match = key.match(/goluri-(\d+)-([12])/);
-    if (!match) continue;
-
-    const id = match[1];
-    const scor1 = Number(inputValues[`goluri-${id}-1`]);
-    const scor2 = Number(inputValues[`goluri-${id}-2`]);
-
-    if (isNaN(scor1) || isNaN(scor2)) continue;
-
-    const meciDiv = document.getElementById(`meci-${id}`);
-    if (!meciDiv) continue;
-
-    const span = meciDiv.querySelector('span');
-    const text = span.textContent;
-    const echipe = text.match(/\|\s(.+?)\s+vs\s+(.+?)\s+\|/);
-
-    const e1 = echipe[1];
-    const e2 = echipe[2];
-
-    statistici[e1].meciuri++;
-    statistici[e2].meciuri++;
-    statistici[e1].goluriMarcate += scor1;
-    statistici[e2].goluriMarcate += scor2;
-    statistici[e1].goluriPrimite += scor2;
-    statistici[e2].goluriPrimite += scor1;
-
-    if (scor1 > scor2) {
-      statistici[e1].victorii++;
-      statistici[e2].infrangeri++;
-      statistici[e1].puncte += 3;
-    } else if (scor1 < scor2) {
-      statistici[e2].victorii++;
-      statistici[e1].infrangeri++;
-      statistici[e2].puncte += 3;
-    } else {
-      statistici[e1].egaluri++;
-      statistici[e2].egaluri++;
-      statistici[e1].puncte += 1;
-      statistici[e2].puncte += 1;
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Rezultate Turneu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
     }
-  }
+    h2, h3 {
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 40px;
+      background-color: #fff;
+    }
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
 
-  return statistici;
-}
+  <h1>Rezultate Turneu</h1>
 
-function afiseazaStatistici(idContainer, statistici) {
-  const container = document.getElementById(idContainer);
-  container.innerHTML = `<h2>Statistici Echipe</h2>`;
+  <div id="rezultateGrupe"></div>
+  <div id="statisticiGrupe"></div>
+  <div id="sferturiFinala"></div>
 
-  const grupeMap = {};
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const allGroupResultsSaved = localStorage.getItem("allGroupResultsSaved") === "true";
+      const grupe = JSON.parse(localStorage.getItem("grupe_turneu") || "{}");
+      const inputValues = JSON.parse(localStorage.getItem("inputValues") || "{}");
+      const meciuriHTML = localStorage.getItem("meciuriGrupe") || "";
+      const sferturiHTML = localStorage.getItem("sferturi") || "";
 
-  for (const echipa in statistici) {
-    const grupa = statistici[echipa].grupa;
-    if (!grupeMap[grupa]) grupeMap[grupa] = [];
-    grupeMap[grupa].push({ echipa, ...statistici[echipa] });
-  }
+      if (allGroupResultsSaved) {
+        document.getElementById("rezultateGrupe").innerHTML = "<h2>Rezultate Grupe</h2>" + meciuriHTML;
+        document.getElementById("sferturiFinala").innerHTML = "<h2>Sferturi de Finală</h2>" + sferturiHTML;
 
-  for (const grupa in grupeMap) {
-    const echipe = grupeMap[grupa].sort((a, b) => b.puncte - a.puncte);
-
-    let table = `<h3>${grupa}</h3><table>
-      <tr><th>Echipă</th><th>Meciuri</th><th>Victorii</th><th>Egaluri</th><th>Înfrângeri</th><th>Goluri+</th><th>Goluri-</th><th>Puncte</th></tr>`;
-
-    echipe.forEach(s => {
-      table += `<tr>
-        <td>${s.echipa}</td><td>${s.meciuri}</td><td>${s.victorii}</td><td>${s.egaluri}</td>
-        <td>${s.infrangeri}</td><td>${s.goluriMarcate}</td><td>${s.goluriPrimite}</td><td>${s.puncte}</td>
-      </tr>`;
+        const statistici = calculeazaStatistici(grupe, inputValues);
+        afiseazaStatistici("statisticiGrupe", statistici);
+      } else {
+        document.getElementById("rezultateGrupe").innerHTML = "<p>Datele nu sunt disponibile în localStorage.</p>";
+      }
     });
 
-    table += `</table>`;
-    container.innerHTML += table;
-  }
-}
+    function calculeazaStatistici(grupe, inputValues) {
+      const statistici = {};
+
+      for (const grupa in grupe) {
+        grupe[grupa].forEach(echipa => {
+          statistici[echipa] = {
+            grupa,
+            meciuri: 0,
+            victorii: 0,
+            egaluri: 0,
+            infrangeri: 0,
+            goluriMarcate: 0,
+            goluriPrimite: 0,
+            puncte: 0,
+          };
+        });
+      }
+
+      for (const key in inputValues) {
+        const match = key.match(/goluri-(\d+)-([12])/);
+        if (!match) continue;
+
+        const id = match[1];
+        const scor1 = Number(inputValues[`goluri-${id}-1`]);
+        const scor2 = Number(inputValues[`goluri-${id}-2`]);
+
+        if (isNaN(scor1) || isNaN(scor2)) continue;
+
+        const meciDiv = document.getElementById(`meci-${id}`);
+        if (!meciDiv) continue;
+
+        const span = meciDiv.querySelector("span");
+        const echipe = span.textContent.match(/\|\s(.+?)\s+vs\s+(.+?)\s+\|/);
+        if (!echipe || echipe.length < 3) continue;
+
+        const e1 = echipe[1].trim();
+        const e2 = echipe[2].trim();
+
+        statistici[e1].meciuri++;
+        statistici[e2].meciuri++;
+        statistici[e1].goluriMarcate += scor1;
+        statistici[e2].goluriMarcate += scor2;
+        statistici[e1].goluriPrimite += scor2;
+        statistici[e2].goluriPrimite += scor1;
+
+        if (scor1 > scor2) {
+          statistici[e1].victorii++;
+          statistici[e2].infrangeri++;
+          statistici[e1].puncte += 3;
+        } else if (scor1 < scor2) {
+          statistici[e2].victorii++;
+          statistici[e1].infrangeri++;
+          statistici[e2].puncte += 3;
+        } else {
+          statistici[e1].egaluri++;
+          statistici[e2].egaluri++;
+          statistici[e1].puncte += 1;
+          statistici[e2].puncte += 1;
+        }
+      }
+
+      return statistici;
+    }
+
+    function afiseazaStatistici(idContainer, statistici) {
+      const container = document.getElementById(idContainer);
+      container.innerHTML = "<h2>Clasamente Grupe</h2>";
+
+      const grupeMap = {};
+
+      for (const echipa in statistici) {
+        const grupa = statistici[echipa].grupa;
+        if (!grupeMap[grupa]) grupeMap[grupa] = [];
+        grupeMap[grupa].push({ echipa, ...statistici[echipa] });
+      }
+
+      for (const grupa in grupeMap) {
+        const echipe = grupeMap[grupa].sort((a, b) => b.puncte - a.puncte || (b.goluriMarcate - b.goluriPrimite) - (a.goluriMarcate - a.goluriPrimite));
+
+        let table = `<h3>${grupa}</h3><table>
+          <tr>
+            <th>Echipă</th><th>M</th><th>V</th><th>E</th><th>Î</th>
+            <th>GM</th><th>GP</th><th>P</th>
+          </tr>`;
+
+        echipe.forEach(e => {
+          table += `<tr>
+            <td>${e.echipa}</td>
+            <td>${e.meciuri}</td>
+            <td>${e.victorii}</td>
+            <td>${e.egaluri}</td>
+            <td>${e.infrangeri}</td>
+            <td>${e.goluriMarcate}</td>
+            <td>${e.goluriPrimite}</td>
+            <td>${e.puncte}</td>
+          </tr>`;
+        });
+
+        table += "</table>";
+        container.innerHTML += table;
+      }
+    }
+  </script>
+
+</body>
+</html>

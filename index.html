@@ -69,47 +69,13 @@
     <div class="quarterfinals-container" id="sferturiTurneu"></div>
 
     <script>
-        // Function to store data in localStorage
-        function storeData() {
-            const grupeTurneu = {
-                "Grupa A": ["FC. Concrete Berești", "Leerdam Sport", "FC. Dosko", "Amicii"],
-                "Grupa B": ["Young Stars", "FC. Eagles", "FC. Tilburg", "FC. Rilland"],
-                "Grupa C": ["FC. Peppy", "FC. Urban Construct", "VidaXL", "FC. Hunters"],
-                "Grupa D": ["FC. Raiders Amsterdam", "FC. Warriors", "CSM Unirea", "Shadow FC"]
-            };
-
-            const sferturiTurneu = {
-                "Sfert 1": ["Shadow FC", "VidaXL"],
-                "Sfert 2": ["Young Stars", "FC. Dosko"],
-                "Sfert 3": ["FC. Warriors", "Amicii"],
-                "Sfert 4": ["FC. Peppy", "FC. Eagles"]
-            };
-
-            const statisticiTurneu = {
-                "Grupa A": {
-                    "FC. Concrete Berești": { echipa: "FC. Concrete Berești", MJ: 1, V: 1, E: 0, I: 0, GM: 1, GP: 0, GV: 1, P: 3 },
-                    "Leerdam Sport": { echipa: "Leerdam Sport", MJ: 1, V: 0, E: 0, I: 1, GM: 0, GP: 1, GV: -1, P: 0 },
-                    "FC. Dosko": { echipa: "FC. Dosko", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 },
-                    "Amicii": { echipa: "Amicii", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 }
-                },
-                "Grupa B": {
-                    "Young Stars": { echipa: "Young Stars", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 },
-                    "FC. Eagles": { echipa: "FC. Eagles", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 },
-                    "FC. Tilburg": { echipa: "FC. Tilburg", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 },
-                    "FC. Rilland": { echipa: "FC. Rilland", MJ: 0, V: 0, E: 0, I: 0, GM: 0, GP: 0, GV: 0, P: 0 }
-                }
-            };
-
-            localStorage.setItem('grupe_turneu', JSON.stringify(grupeTurneu));
-            localStorage.setItem('sferturi_turneu', JSON.stringify(sferturiTurneu));
-            localStorage.setItem('statistici_turneu', JSON.stringify(statisticiTurneu));
-        }
-
         // Function to display tournament statistics and quarterfinals
         function afiseazaStatisticiSiSferturi() {
+            // Retrieve data from localStorage
             const grupeTurneu = JSON.parse(localStorage.getItem('grupe_turneu'));
             const sferturiTurneu = JSON.parse(localStorage.getItem('sferturi_turneu'));
             const statisticiTurneu = JSON.parse(localStorage.getItem('statistici_turneu'));
+
             const statisticiTurneuDiv = document.getElementById('statisticiTurneu');
             const sferturiTurneuDiv = document.getElementById('sferturiTurneu');
 
@@ -187,11 +153,8 @@
             }
         }
 
-        // Store data and display it on page load
-        window.onload = function() {
-            storeData();
-            afiseazaStatisticiSiSferturi();
-        };
+        // Display data on page load
+        window.onload = afiseazaStatisticiSiSferturi;
     </script>
 </body>
 </html>

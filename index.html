@@ -49,7 +49,7 @@
 
             if (statisticiTurneu) {
                 for (const grupa of Object.keys(statisticiTurneu)) {
-                    const echipe = statisticiTurneu[grupa];
+                    const echipe = statisticiTurneu[grupa]; // <-- array, nu obiect
 
                     let html = `
                         <div class="group">
@@ -67,9 +67,8 @@
                                     <th>P</th>
                                 </tr>`;
 
-                    // Păstrăm ordinea echipelor exact cum apar în obiect
-                    for (const numeEchipa of Object.keys(echipe)) {
-                        const stats = echipe[numeEchipa];
+                    // Afișăm fiecare echipă exact în ordinea array-ului
+                    for (const stats of echipe) {
                         html += `
                             <tr>
                                 <td>${stats.echipa}</td>

@@ -57,8 +57,6 @@
 
             if (statisticiTurneu) {
                 statisticiTurneuDiv.innerHTML = ''; // Clear previous content
-                const groupsContainer = document.createElement('div');
-                groupsContainer.className = 'groups-container';
 
                 for (const grupa in statisticiTurneu) {
                     let groupDiv = document.createElement('div');
@@ -98,10 +96,8 @@
 
                     html += `</table>`;
                     groupDiv.innerHTML = html;
-                    groupsContainer.appendChild(groupDiv);
+                    statisticiTurneuDiv.appendChild(groupDiv);
                 }
-
-                statisticiTurneuDiv.appendChild(groupsContainer);
             } else {
                 statisticiTurneuDiv.innerHTML = '<p>Nu există date disponibile în localStorage.</p>';
             }

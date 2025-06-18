@@ -48,7 +48,9 @@
             const statisticiTurneuDiv = document.getElementById('statisticiTurneu');
 
             if (statisticiTurneu) {
-                for (const grupa in statisticiTurneu) {
+                for (const grupa of Object.keys(statisticiTurneu)) {
+                    const echipe = statisticiTurneu[grupa];
+
                     let html = `
                         <div class="group">
                             <h3>${grupa}</h3>
@@ -65,8 +67,9 @@
                                     <th>P</th>
                                 </tr>`;
 
-                    for (const echipa in statisticiTurneu[grupa]) {
-                        const stats = statisticiTurneu[grupa][echipa];
+                    // Păstrăm ordinea echipelor exact cum apar în obiect
+                    for (const numeEchipa of Object.keys(echipe)) {
+                        const stats = echipe[numeEchipa];
                         html += `
                             <tr>
                                 <td>${stats.echipa}</td>

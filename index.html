@@ -1,69 +1,92 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Grupe Turneu</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    h2 { margin-top: 40px; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 40px; }
-    th, td { border: 1px solid #aaa; padding: 8px; text-align: center; }
-    th { background-color: #eee; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afisare Grupe și Statistici</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .group {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .group h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        .team-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .team-list li {
+            padding: 5px 0;
+        }
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .stats-table th, .stats-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .stats-table th {
+            background-color: #f2f2f2;
+        }
+        .stats-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
+    <h1>Grupe și Statistici Turneu</h1>
+    <div id="grupeTurneu"></div>
+    <div id="statisticiTurneu"></div>
 
-  <h1>Grupele și Statistici</h1>
-  <div id="containerGrupe"></div>
+    <script>
+        // Funcție pentru a afișa grupele de turneu
+        function afiseazaGrupeTurneu() {
+            const grupeTurneu = JSON.parse(localStorage.getItem('grupe_turneu'));
+            const grupeTurneuDiv = document.getElementById('grupeTurneu');
 
-  <script>
-    const grupe = JSON.parse(localStorage.getItem("grupe_turneu"));
-    const statistici = JSON.parse(localStorage.getItem("statistici_turneu"));
+            if (grupeTurneu) {
+                grupeTurneuDiv.innerHTML = '<h2>Grupe Turneu</h2>';
+                for (const grupa in grupeTurneu) {
+                    grupeTurneuDiv.innerHTML += `<div class="group"><h3>${grupa}</h3><ul class="team-list">${grupeTurneu[grupa].map(team => `<li>${team}</li>`).join('')}</ul></div>`;
+                }
+            }
+        }
 
-    const container = document.getElementById("containerGrupe");
+        // Funcție pentru a afișa statisticile turneului
+        function afiseazaStatisticiTurneu() {
+            const statisticiTurneu = JSON.parse(localStorage.getItem('statistici_turneu'));
+            const statisticiTurneuDiv = document.getElementById('statisticiTurneu');
 
-    if (!grupe || !statistici) {
-      container.innerHTML = "<p>Datele nu au fost găsite în localStorage.</p>";
-    } else {
-      Object.keys(grupe).forEach(numeGrupa => {
-        const echipe = grupe[numeGrupa];
-        const statisticiGrupa = statistici[numeGrupa];
+            if (statisticiTurneu) {
+                statisticiTurneuDiv.innerHTML = '<h2>Statistici Turneu</h2>';
+                for (const grupa in statisticiTurneu) {
+                    statisticiTurneuDiv.innerHTML += `<div class="group"><h3>${grupa}</h3><table class="stats-table"><tr><th>Echipa</th><th>MJ</th><th>V</th><th>E</th><th>I</th><th>GM</th><th>GP</th><th>GV</th><th>P</th></tr>`;
+                    for (const echipa in statisticiTurneu[grupa]) {
+                        const stats = statisticiTurneu[grupa][echipa];
+                        statisticiTurneuDiv.innerHTML += `<tr><td>${stats.echipa}</td><td>${stats.MJ}</td><td>${stats.V}</td><td>${stats.E}</td><td>${stats.I}</td><td>${stats.GM}</td><td>${stats.GP}</td><td>${stats.GV}</td><td>${stats.P}</td></tr>`;
+                    }
+                    statisticiTurneuDiv.innerHTML += `</table></div>`;
+                }
+            }
+        }
 
-        const titlu = document.createElement("h2");
-        titlu.textContent = numeGrupa;
-        container.appendChild(titlu);
-
-        const tabel = document.createElement("table");
-        tabel.innerHTML = `
-          <thead>
-            <tr>
-              <th>Echipă</th><th>MJ</th><th>V</th><th>E</th><th>I</th>
-              <th>GM</th><th>GP</th><th>GV</th><th>P</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${echipe.map(nume => {
-              const stats = statisticiGrupa[nume];
-              if (!stats) return `<tr><td colspan="9">${nume} - fără statistici</td></tr>`;
-              return `
-                <tr>
-                  <td>${stats.echipa}</td>
-                  <td>${stats.MJ}</td>
-                  <td>${stats.V}</td>
-                  <td>${stats.E}</td>
-                  <td>${stats.I}</td>
-                  <td>${stats.GM}</td>
-                  <td>${stats.GP}</td>
-                  <td>${stats.GV}</td>
-                  <td>${stats.P}</td>
-                </tr>`;
-            }).join("")}
-          </tbody>
-        `;
-        container.appendChild(tabel);
-      });
-    }
-  </script>
-
+        // Apelarea funcțiilor pentru a afișa datele la încărcarea paginii
+        window.onload = function() {
+            afiseazaGrupeTurneu();
+            afiseazaStatisticiTurneu();
+        };
+    </script>
 </body>
 </html>
